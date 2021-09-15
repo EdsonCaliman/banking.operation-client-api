@@ -1,13 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Banking.Operation.Client.Domain.Client.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Net.Core.Template.CrossCutting.Ioc.Modules
 {
     public static class DomainModule
     {
-        public static void Register(this IServiceCollection services, IConfiguration configuration)
+        public static void Register(this IServiceCollection services)
         {
-            //services.AddScoped<IService, Service>();
+            services.AddScoped<IClientService, ClientService>();
         }
     }
 }

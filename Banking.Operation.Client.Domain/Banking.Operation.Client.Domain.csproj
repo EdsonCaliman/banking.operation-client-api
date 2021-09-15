@@ -5,9 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Client\Dtos\" />
-    <Folder Include="Client\Services\" />
-    <Folder Include="Client\Repositories\" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

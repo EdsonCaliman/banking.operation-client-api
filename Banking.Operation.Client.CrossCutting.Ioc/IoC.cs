@@ -9,7 +9,7 @@ namespace Net.Core.Template.CrossCutting.Ioc
         public static IServiceCollection ConfigureContainer(this IServiceCollection services, IConfiguration configuration)
         {
             DataModule.Register(services, configuration);
-            services.Register(configuration);
+            services.Register();
             return services;
         }
     }

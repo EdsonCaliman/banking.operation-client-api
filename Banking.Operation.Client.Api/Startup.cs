@@ -30,9 +30,15 @@ namespace Net.Core.Api
 
             services.AddControllers();
             services.ConfigureContainer(_configuration);
+            services.AddApiVersioning(options => options.ReportApiVersions = true);
+            services.AddVersionedApiExplorer(options =>
+                     {
+                         options.GroupNameFormat = "'v'VVV";
+                         options.SubstituteApiVersionInUrl = true;
+                     });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Net.Core.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Banking.Operation.Client.Api", Version = "v1" });
             });
         }
 
@@ -43,14 +49,10 @@ namespace Net.Core.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Net.Core.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Banking.Operation.Client.Api v1"));
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
