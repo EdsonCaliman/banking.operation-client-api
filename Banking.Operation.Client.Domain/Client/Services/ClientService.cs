@@ -71,7 +71,7 @@ namespace Banking.Operation.Client.Domain.Client.Services
 
             if (client is null)
             {
-                throw new Exception();
+                return;
             }
 
             _clientRepository.Delete(client);
