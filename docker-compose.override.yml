@@ -9,6 +9,8 @@ services:
       MYSQL_DATABASE: banking-operation-client
     ports:
       - "3306:3306"
+    volumes:
+      - "./scripts/create-client-table.sql:/docker-entrypoint-initdb.d/1.sql"
 
   banking.operation.client.api:
     container_name: client.api
