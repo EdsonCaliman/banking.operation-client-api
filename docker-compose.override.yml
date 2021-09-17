@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  mysql:
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: banking-operation-client
+    ports:
+      - "3306:3306"
+
+  banking.operation.client.api:
+    container_name: client.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DefaultConnection=server=mysql;user=root;password=1234;database=banking-operation-client"
+    depends_on:
+      - mysql
+    ports:
+      - "8000:80"
