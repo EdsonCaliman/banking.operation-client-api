@@ -1,4 +1,6 @@
-﻿using Banking.Operation.Client.Domain.Client.Dtos;
+﻿using Banking.Operation.Client.Domain.Abstractions.Exceptions;
+using Banking.Operation.Client.Domain.Abstractions.Messages;
+using Banking.Operation.Client.Domain.Client.Dtos;
 using Banking.Operation.Client.Domain.Client.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -87,9 +89,13 @@ namespace Banking.Operation.Client.Api.Controllers
 
                 return Ok(clientSaved);
             }
+            catch (BussinessException bex)
+            {
+                return BadRequest(new BussinessMessage(bex.Type, bex.Message));
+            }
             catch (Exception ex)
             {
-                _logger.LogError($"GetOne exception: {ex}");
+                _logger.LogError($"Save exception: {ex}");
                 return BadRequest();
             }
         }

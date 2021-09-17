@@ -1,4 +1,5 @@
-﻿using Banking.Operation.Client.Domain.Client.Dtos;
+﻿using Banking.Operation.Client.Domain.Abstractions.Exceptions;
+using Banking.Operation.Client.Domain.Client.Dtos;
 using Banking.Operation.Client.Domain.Client.Entities;
 using Banking.Operation.Client.Domain.Client.Repositories;
 using System;
@@ -34,6 +35,11 @@ namespace Banking.Operation.Client.Domain.Client.Services
         public async Task<ResponseClientDto> Save(RequestClientDto client)
         {
             var clientEntity = new ClientEntity(Guid.NewGuid(), client.Name, client.Email);
+
+            if (await _clientRepository.FindOne(c => c.Email == client.Email) != null)
+            {
+                throw new BussinessException("Operation not performed", "Email already registered");
+            }
 
             await DefineInexistentAccountNumber(clientEntity);
 

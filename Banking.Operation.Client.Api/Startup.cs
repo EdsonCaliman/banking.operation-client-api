@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Net.Core.Template.CrossCutting.Ioc;
+using Newtonsoft.Json;
 
 namespace Net.Core.Api
 {
@@ -27,8 +28,13 @@ namespace Net.Core.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
+            services.AddControllers()
+                    .AddNewtonsoftJson(jsonOptions =>
+             {
+                 jsonOptions.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                 jsonOptions.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                 jsonOptions.UseCamelCasing(true);
+             });
             services.ConfigureContainer(_configuration);
             services.AddApiVersioning(options => options.ReportApiVersions = true);
             services.AddVersionedApiExplorer(options =>
