@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Banking.Operation.Client.Api.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("/v{version:apiVersion}/clients")]
+    [Route("/v{version:apiVersion}/banking-operation/clients")]
     [ApiController]
     public class ClientController : Controller
     {
