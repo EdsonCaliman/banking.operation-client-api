@@ -78,7 +78,7 @@ namespace Banking.Operation.Client.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ResponseClientDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(List<BussinessMessage>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Save(RequestClientDto client)
         {
             _logger.LogInformation("Receive Save...");
@@ -102,7 +102,6 @@ namespace Banking.Operation.Client.Api.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ResponseClientDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Update(Guid id, RequestClientDto client)
         {
             _logger.LogInformation("Receive Update...");
@@ -122,7 +121,6 @@ namespace Banking.Operation.Client.Api.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Delete(Guid id)
         {
             _logger.LogInformation("Receive Delete...");
