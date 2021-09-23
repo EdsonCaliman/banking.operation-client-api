@@ -82,5 +82,12 @@ namespace Banking.Operation.Client.Domain.Client.Services
 
             _clientRepository.Delete(client);
         }
+
+        public async Task<ResponseClientDto> GetByAccount(int account)
+        {
+            var client = await _clientRepository.FindOne(c => c.Account == account);
+
+            return new ResponseClientDto(client);
+        }
     }
 }

@@ -51,7 +51,7 @@ namespace Banking.Operation.Client.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         [ProducesResponseType(typeof(ResponseClientDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetOne(Guid id)
@@ -72,6 +72,31 @@ namespace Banking.Operation.Client.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"GetOne exception: {ex}");
+                throw;
+            }
+        }
+
+        [HttpGet("{account:int}")]
+        [ProducesResponseType(typeof(ResponseClientDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GetByAccount(int account)
+        {
+            _logger.LogInformation("Receive GetByAccount...");
+
+            try
+            {
+                var client = await _clientService.GetByAccount(account);
+
+                if (client is null)
+                {
+                    return NoContent();
+                }
+
+                return Ok(client);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetByAccount exception: {ex}");
                 throw;
             }
         }

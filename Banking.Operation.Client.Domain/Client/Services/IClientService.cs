@@ -12,5 +12,6 @@ namespace Banking.Operation.Client.Domain.Client.Services
         Task<ResponseClientDto> Save(RequestClientDto client);
         Task<ResponseClientDto> Update(Guid id, RequestClientDto client);
         Task Delete(Guid id);
+        Task<ResponseClientDto> GetByAccount(int account);
     }
 }

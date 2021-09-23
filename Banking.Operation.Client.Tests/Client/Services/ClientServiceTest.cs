@@ -102,5 +102,17 @@ namespace Banking.Operation.Client.Tests.Client.Services
             _clientRepository.Verify(c => c.FindOne(It.IsAny<Expression<Func<ClientEntity, bool>>>()));
             _clientRepository.Verify(c => c.Delete(It.IsAny<ClientEntity>()), Times.Never);
         }
+
+        [Test]
+        public void ShouldReturnClientByAccount()
+        {
+            var id = Guid.NewGuid();
+            var client = new ClientEntity(id, "Test", "test");
+            _clientRepository.Setup(c => c.FindOne(c => c.Id == id)).Returns(Task.FromResult(client));
+
+            var clientSaved = _clientService.GetByAccount(1234);
+
+            Assert.IsNotNull(clientSaved);
+        }
     }
 }
