@@ -69,6 +69,10 @@ namespace Banking.Operation.Client.Api.Controllers
 
                 return Ok(client);
             }
+            catch (BussinessException bex)
+            {
+                return BadRequest(new BussinessMessage(bex.Type, bex.Message));
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"GetOne exception: {ex}");
@@ -137,6 +141,10 @@ namespace Banking.Operation.Client.Api.Controllers
 
                 return Ok(clientSaved);
             }
+            catch (BussinessException bex)
+            {
+                return BadRequest(new BussinessMessage(bex.Type, bex.Message));
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Update exception: {ex}");
@@ -155,6 +163,10 @@ namespace Banking.Operation.Client.Api.Controllers
                 await _clientService.Delete(id);
 
                 return Ok();
+            }
+            catch (BussinessException bex)
+            {
+                return BadRequest(new BussinessMessage(bex.Type, bex.Message));
             }
             catch (Exception ex)
             {

@@ -27,7 +27,7 @@ namespace Banking.Operation.Client.Domain.Client.Services
 
         public async Task<ResponseClientDto> GetOne(Guid id)
         {
-            var client = await _clientRepository.FindOne(c => c.Id == id);
+            var client = await GetValidClient(id);
 
             return new ResponseClientDto(client);
         }
@@ -36,10 +36,7 @@ namespace Banking.Operation.Client.Domain.Client.Services
         {
             var clientEntity = new ClientEntity(Guid.NewGuid(), client.Name, client.Email);
 
-            if (await _clientRepository.FindOne(c => c.Email == client.Email) != null)
-            {
-                throw new BussinessException("Operation not performed", "Email already registered");
-            }
+            await ValidateIfEmailAlreadyRegistered(client);
 
             await DefineInexistentAccountNumber(clientEntity);
 
@@ -50,18 +47,11 @@ namespace Banking.Operation.Client.Domain.Client.Services
             return clientDto;
         }
 
-        private async Task DefineInexistentAccountNumber(ClientEntity clientEntity)
-        {
-            do
-            {
-                clientEntity.DefineRandomAcccount();
-
-            } while (await _clientRepository.FindOne(c => c.Account == clientEntity.Account) != null);
-        }
-
         public async Task<ResponseClientDto> Update(Guid id, RequestClientDto client)
         {
-            var clientEntity = await _clientRepository.FindOne(c => c.Id == id);
+            var clientEntity = await GetValidClient(id);
+
+            await ValidateIfEmailAlreadyRegistered(client);            
 
             clientEntity.Name = client.Name;
             clientEntity.Email = client.Email;
@@ -73,21 +63,50 @@ namespace Banking.Operation.Client.Domain.Client.Services
 
         public async Task Delete(Guid id)
         {
-            var client = await _clientRepository.FindOne(c => c.Id == id);
+            var clientEntity = await GetValidClient(id);
 
-            if (client is null)
-            {
-                return;
-            }
-
-            _clientRepository.Delete(client);
+            _clientRepository.Delete(clientEntity);
         }
 
         public async Task<ResponseClientDto> GetByAccount(int account)
         {
             var client = await _clientRepository.FindOne(c => c.Account == account);
 
+            if (client is null)
+            {
+                return null;
+            }
+
             return new ResponseClientDto(client);
+        }
+
+        private async Task ValidateIfEmailAlreadyRegistered(RequestClientDto client)
+        {
+            if (await _clientRepository.FindOne(c => c.Email == client.Email) != null)
+            {
+                throw new BussinessException("Operation not performed", "Email already registered");
+            }
+        }
+
+        private async Task DefineInexistentAccountNumber(ClientEntity clientEntity)
+        {
+            do
+            {
+                clientEntity.DefineRandomAcccount();
+
+            } while (await _clientRepository.FindOne(c => c.Account == clientEntity.Account) != null);
+        }
+
+        private async Task<ClientEntity> GetValidClient(Guid id)
+        {
+            var clientEntity = await _clientRepository.FindOne(c => c.Id == id);
+
+            if (clientEntity is null)
+            {
+                throw new BussinessException("Operation not performed", "Client does not registered");
+            }
+
+            return clientEntity;
         }
     }
 }
