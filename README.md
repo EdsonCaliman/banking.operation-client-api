@@ -18,7 +18,7 @@ This component will be responsible for register the clients, attending the crud 
 # Bussiness Rules
 
  - A client needs to have a name and email.
- - The name has to be at least 150 characters and is mandatory.
+ - The name must have a maximum of 150 characters and is mandatory.
  - The email should be valid and is mandatory.
  - The same email is not allowed for different customers.
  - The client needs to have an Id for identification, which should be generated automatically.
