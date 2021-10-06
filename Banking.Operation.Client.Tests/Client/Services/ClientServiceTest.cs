@@ -69,7 +69,7 @@ namespace Banking.Operation.Client.Tests.Client.Services
         public async Task ShouldUpdateClient()
         {
             var id = Guid.NewGuid();
-            var client = new RequestClientDto { Name = "test", Email = "test@test.com" };
+            var client = new RequestUpdateClientDto { Name = "test", Email = "test@test.com" };
             var clientSaved = new ClientEntity(id, "other", "other@other.com");
             _clientRepository.Setup(c => c.FindOne(c => c.Id == id)).Returns(Task.FromResult(clientSaved));
 
@@ -85,7 +85,7 @@ namespace Banking.Operation.Client.Tests.Client.Services
         public void ShouldNotUpdateClientWhenTheEmailIsAlreadyRegistered()
         {
             var id = Guid.NewGuid();
-            var client = new RequestClientDto { Name = "test", Email = "test@test.com" };
+            var client = new RequestUpdateClientDto { Name = "test", Email = "test@test.com" };
             var clientSaved = new ClientEntity(id, "other", "test@test.com");
             _clientRepository.Setup(c => c.FindOne(It.IsAny<Expression<Func<ClientEntity, bool>>>())).Returns(Task.FromResult(clientSaved));
 

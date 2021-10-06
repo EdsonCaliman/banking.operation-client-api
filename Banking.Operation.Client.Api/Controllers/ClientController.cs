@@ -131,7 +131,7 @@ namespace Banking.Operation.Client.Api.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ResponseClientDto), StatusCodes.Status200OK)]
-        public async Task<ActionResult> Update(Guid id, RequestClientDto client)
+        public async Task<ActionResult> Update(Guid id, RequestUpdateClientDto client)
         {
             _logger.LogInformation("Receive Update...");
 

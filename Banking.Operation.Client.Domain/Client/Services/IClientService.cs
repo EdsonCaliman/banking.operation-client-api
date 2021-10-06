@@ -10,7 +10,7 @@ namespace Banking.Operation.Client.Domain.Client.Services
         List<ResponseClientDto> GetAll();
         Task<ResponseClientDto> GetOne(Guid id);
         Task<ResponseClientDto> Save(RequestClientDto client);
-        Task<ResponseClientDto> Update(Guid id, RequestClientDto client);
+        Task<ResponseClientDto> Update(Guid id, RequestUpdateClientDto client);
         Task Delete(Guid id);
         Task<ResponseClientDto> GetByAccount(int account);
     }

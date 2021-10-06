@@ -36,7 +36,7 @@ namespace Banking.Operation.Client.Domain.Client.Services
         {
             var clientEntity = new ClientEntity(Guid.NewGuid(), client.Name, client.Email);
 
-            await ValidateIfEmailAlreadyRegistered(client);
+            await ValidateIfEmailAlreadyRegistered(client.Email);
 
             await DefineInexistentAccountNumber(clientEntity);
 
@@ -47,14 +47,21 @@ namespace Banking.Operation.Client.Domain.Client.Services
             return clientDto;
         }
 
-        public async Task<ResponseClientDto> Update(Guid id, RequestClientDto client)
+        public async Task<ResponseClientDto> Update(Guid id, RequestUpdateClientDto client)
         {
             var clientEntity = await GetValidClient(id);
 
-            await ValidateIfEmailAlreadyRegistered(client);            
+            await ValidateIfEmailAlreadyRegistered(client.Email);
 
-            clientEntity.Name = client.Name;
-            clientEntity.Email = client.Email;
+            if (!string.IsNullOrEmpty(client.Name))
+            {
+                clientEntity.Name = client.Name;
+            }
+
+            if (!string.IsNullOrEmpty(client.Email))
+            {
+                clientEntity.Email = client.Email;
+            }
 
             _clientRepository.Update(clientEntity);
 
@@ -80,9 +87,9 @@ namespace Banking.Operation.Client.Domain.Client.Services
             return new ResponseClientDto(client);
         }
 
-        private async Task ValidateIfEmailAlreadyRegistered(RequestClientDto client)
+        private async Task ValidateIfEmailAlreadyRegistered(string email)
         {
-            if (await _clientRepository.FindOne(c => c.Email == client.Email) != null)
+            if (await _clientRepository.FindOne(c => c.Email == email) != null)
             {
                 throw new BussinessException("Operation not performed", "Email already registered");
             }
